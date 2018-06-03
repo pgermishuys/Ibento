@@ -61,7 +61,6 @@ Task("VersionAssembly")
     var newCommitHash=$"public static readonly string Hashtag = \"{commitHash}\";";
     var newCommitTimeStamp=$"public static readonly string Timestamp = \"{commitTimeStamp}\";";
 
-    var files = GetFiles("./**/VersionInfo.cs");
     ReplaceRegexInFiles("./**/VersionInfo.cs", versionPattern, newVersion);
     ReplaceRegexInFiles("./**/VersionInfo.cs", branchPattern, newBranch);
     ReplaceRegexInFiles("./**/VersionInfo.cs", commitHashPattern, newCommitHash);
@@ -83,7 +82,8 @@ string StartProcessAndReturnOutput(string processName, string arguments){
 }
 
 Task("Default")
-  .IsDependentOn("BuildClr");
+  .IsDependentOn("BuildClr")
+  .IsDependentOn("RevertVersionFiles");
 
 
 RunTarget(target);
