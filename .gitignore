@@ -65,3 +65,6 @@ artifacts
 # javascript
 dist
 node_modules
+
+# Visual Studio Code
+.vscode
