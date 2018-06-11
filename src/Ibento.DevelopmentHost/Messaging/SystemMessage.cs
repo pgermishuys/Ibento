@@ -7,11 +7,7 @@ namespace Ibento.DevelopmentHost.Messaging
         public class SystemInit : Message
         {
             private static readonly int TypeId = Interlocked.Increment(ref NextMsgId);
-
-            public override int MsgTypeId
-            {
-                get { return TypeId; }
-            }
+            public override int MsgTypeId => TypeId;
         }
     }
 }

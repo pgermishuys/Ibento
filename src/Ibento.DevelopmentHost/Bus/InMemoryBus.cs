@@ -68,7 +68,7 @@ namespace Ibento.DevelopmentHost.Bus
 
         public void Publish(Message message)
         {
-            if (message == null) throw new ArgumentNullException("message");
+            if (message == null) throw new ArgumentNullException(nameof(message));
 
             var handlers = _handlers[message.MsgTypeId];
             for (int i = 0, n = handlers.Count; i < n; ++i)
@@ -81,6 +81,7 @@ namespace Ibento.DevelopmentHost.Bus
                     handler.TryHandle(message);
 
                     var elapsed = DateTime.UtcNow - start;
+                    Log.Information("Executed {Message} in {Time}ms", message.GetType().Name, elapsed.TotalMilliseconds);
                     if (elapsed > _slowMsgThreshold)
                     {
                         Log.Debug("SLOW BUS MSG [{0}]: {1} - {2}ms. Handler: {3}.",

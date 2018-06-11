@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using System.Threading.Tasks;
-using System;
 
 namespace Ibento.DevelopmentHost
 {
