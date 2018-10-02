@@ -49,7 +49,6 @@ namespace Ibento.DevelopmentHost.Messaging
                 parents.Add(msgTypeId, new List<int>());
 
                 MaxMsgTypeId = Math.Max(msgTypeId, MaxMsgTypeId);
-                //Log.WriteLine("Found {0} with MsgTypeId {1}", msgType.Name, msgTypeId);
 
                 var type = msgType;
                 while (true)
