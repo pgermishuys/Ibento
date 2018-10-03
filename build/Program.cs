@@ -45,8 +45,6 @@ namespace build
                 var newCommitHash=$"public static readonly string Hashtag = \"{commitHash}\";";
                 var newCommitTimeStamp=$"public static readonly string Timestamp = \"{commitTimeStamp}\";";
                 
-                Console.Write(newBranch);
-                
                 foreach(var versionInfoFile in Directory.GetFiles(Directory.GetCurrentDirectory(), "*", SearchOption.AllDirectories)
                     .Where(path => path.Contains("VersionInfo.cs")))
                 {
@@ -55,7 +53,6 @@ namespace build
                     fileContents = Regex.Replace(fileContents, branchPattern, newBranch);
                     fileContents = Regex.Replace(fileContents, commitHashPattern, newCommitHash);
                     fileContents = Regex.Replace(fileContents, timestampPattern, newCommitTimeStamp);
-                    Console.WriteLine($"{fileContents}");
                     File.WriteAllText(versionInfoFile, fileContents);
                 }
             });
