@@ -49,7 +49,7 @@ namespace build
                 foreach(var versionInfoFile in Directory.GetFiles(Directory.GetCurrentDirectory(), "*", SearchOption.AllDirectories)
                     .Where(path => path.Contains("VersionInfo.cs")))
                 {
-                    Read("git", $"checkout {versionInfoFile}");
+                    Run("git", $"checkout {versionInfoFile}");
                 }
             });
             Target(Default, DependsOn(VersionAssembly, Build, RevertVersionFiles));
