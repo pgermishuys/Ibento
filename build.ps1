@@ -3,6 +3,8 @@ Param(
     [string]$Target = "default"
 )
 
+$ErrorActionPreference = "Stop";
+
 # Install .NET Core
 
 $dotNetVersionString = dotnet --version
