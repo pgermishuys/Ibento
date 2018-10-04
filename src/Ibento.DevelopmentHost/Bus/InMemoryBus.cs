@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Ibento.DevelopmentHost.Messaging;
 using Serilog;
 
@@ -61,12 +62,12 @@ namespace Ibento.DevelopmentHost.Bus
             }
         }
 
-        public void Handle(Message message)
+        public async Task Handle(Message message)
         {
-            Publish(message);
+            await Publish(message);
         }
 
-        public void Publish(Message message)
+        public async Task Publish(Message message)
         {
             if (message == null) throw new ArgumentNullException(nameof(message));
 
@@ -78,7 +79,7 @@ namespace Ibento.DevelopmentHost.Bus
                 {
                     var start = DateTime.UtcNow;
 
-                    handler.TryHandle(message);
+                    await handler.TryHandle(message);
 
                     var elapsed = DateTime.UtcNow - start;
                     Log.Information("Executed {Message} in {Time}ms", message.GetType().Name, elapsed.TotalMilliseconds);
@@ -86,14 +87,11 @@ namespace Ibento.DevelopmentHost.Bus
                     {
                         Log.Debug("SLOW BUS MSG [{0}]: {1} - {2}ms. Handler: {3}.",
                                   Name, message.GetType().Name, (int)elapsed.TotalMilliseconds, handler.HandlerName);
-                        if (elapsed > QueuedHandler.VerySlowMsgThreshold && !(message is SystemMessage.SystemInit))
-                            Log.Error("---!!! VERY SLOW BUS MSG [{0}]: {1} - {2}ms. Handler: {3}.",
-                                      Name, message.GetType().Name, (int)elapsed.TotalMilliseconds, handler.HandlerName);
                     }
                 }
                 else
                 {
-                    handler.TryHandle(message);
+                    await handler.TryHandle(message);
                 }
             }
         }

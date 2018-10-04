@@ -1,10 +1,11 @@
-﻿using Ibento.DevelopmentHost.Messaging;
+﻿using System.Threading.Tasks;
+using Ibento.DevelopmentHost.Messaging;
 
 namespace Ibento.DevelopmentHost.Bus
 {
     public interface IPublisher
     {
-        void Publish(Message message);
+        Task Publish(Message message);
     }
 
     public interface IThreadSafePublisher 

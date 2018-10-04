@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Ibento.DevelopmentHost.Messaging;
 
 namespace Ibento.DevelopmentHost.Bus
@@ -6,7 +7,7 @@ namespace Ibento.DevelopmentHost.Bus
     internal interface IMessageHandler
     {
         string HandlerName { get; }
-        bool TryHandle(Message message);
+        Task<bool> TryHandle(Message message);
         bool IsSame<T>(object handler);
     }
 
@@ -24,12 +25,12 @@ namespace Ibento.DevelopmentHost.Bus
             HandlerName = handlerName ?? string.Empty;
         }
 
-        public bool TryHandle(Message message)
+        public async Task<bool> TryHandle(Message message)
         {
             var msg = message as T;
             if (msg != null)
             {
-                _handler.Handle(msg);
+                await _handler.Handle(msg);
                 return true;
             }
             return false;

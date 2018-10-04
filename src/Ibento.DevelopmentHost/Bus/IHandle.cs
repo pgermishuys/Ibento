@@ -1,9 +1,10 @@
-﻿using Ibento.DevelopmentHost.Messaging;
+﻿using System.Threading.Tasks;
+using Ibento.DevelopmentHost.Messaging;
 
 namespace Ibento.DevelopmentHost.Bus
 {
     public interface IHandle<T> where T: Message
     {
-        void Handle(T message);
+        Task Handle(T message);
     }
 }

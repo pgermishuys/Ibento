@@ -1,4 +1,5 @@
-﻿using Ibento.DevelopmentHost.Bus;
+﻿using System.Threading.Tasks;
+using Ibento.DevelopmentHost.Bus;
 using Ibento.DevelopmentHost.Messaging;
 
 namespace Ibento.DevelopmentHost.Services
@@ -10,10 +11,10 @@ namespace Ibento.DevelopmentHost.Services
         {
             _publisher = publisher;
         }
-        public void Handle(IncomingHttpRequestMessage message)
+        public async Task Handle(IncomingHttpRequestMessage message)
         {
             // if all checks out, then publish the next message
-            _publisher.Publish(new AuthenticatedRequestMessage(message.Entity));
+            await _publisher.Publish(new AuthenticatedRequestMessage(message.Entity));
         }
     }
 }
