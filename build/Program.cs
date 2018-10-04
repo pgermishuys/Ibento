@@ -12,7 +12,7 @@ namespace build
         private const string VersionAssembly = "versionAssembly";
         private const string RevertVersionFiles = "revertVersionFiles";
         private const string Build = "build";
-        
+
         static void Main(string[] args)
         {
             Target(VersionAssembly, () =>
@@ -27,12 +27,12 @@ namespace build
                 var commitHashPattern = ".*(Hashtag = ).*";
                 var timestampPattern = ".*(Timestamp = ).*";
 
-                var newVersion=$"public static readonly string Version = \"{version}\";";
-                var newBranch=$"public static readonly string Branch = \"{branchName}\";";
-                var newCommitHash=$"public static readonly string Hashtag = \"{commitHash}\";";
-                var newCommitTimeStamp=$"public static readonly string Timestamp = \"{commitTimeStamp}\";";
-                
-                foreach(var versionInfoFile in Directory.GetFiles(Directory.GetCurrentDirectory(), "*", SearchOption.AllDirectories)
+                var newVersion = $"public static readonly string Version = \"{version}\";";
+                var newBranch = $"public static readonly string Branch = \"{branchName}\";";
+                var newCommitHash = $"public static readonly string Hashtag = \"{commitHash}\";";
+                var newCommitTimeStamp = $"public static readonly string Timestamp = \"{commitTimeStamp}\";";
+
+                foreach (var versionInfoFile in Directory.GetFiles(Directory.GetCurrentDirectory(), "*", SearchOption.AllDirectories)
                     .Where(path => path.Contains("VersionInfo.cs")))
                 {
                     var fileContents = File.ReadAllText(versionInfoFile);
@@ -46,7 +46,7 @@ namespace build
             Target(Build, () => Run("dotnet", "build ./src/Ibento.sln"));
             Target(RevertVersionFiles, () =>
             {
-                foreach(var versionInfoFile in Directory.GetFiles(Directory.GetCurrentDirectory(), "*", SearchOption.AllDirectories)
+                foreach (var versionInfoFile in Directory.GetFiles(Directory.GetCurrentDirectory(), "*", SearchOption.AllDirectories)
                     .Where(path => path.Contains("VersionInfo.cs")))
                 {
                     Run("git", $"checkout {versionInfoFile}");
