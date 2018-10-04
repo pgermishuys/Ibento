@@ -1,7 +1,5 @@
-using System;
 using System.Linq;
 using System.IO;
-using System.Diagnostics;
 using System.Text.RegularExpressions;
 using static Bullseye.Targets;
 using static SimpleExec.Command;
@@ -15,25 +13,14 @@ namespace build
         private const string RevertVersionFiles = "revertVersionFiles";
         private const string Build = "build";
         
-        static string StartProcessAndReturnOutput(string processName, string arguments){
-            var process = Process.Start(new ProcessStartInfo
-            {
-                FileName = processName,
-                Arguments = arguments,
-                RedirectStandardOutput = true,
-            });
-            process.WaitForExit();
-            return process.StandardOutput.ReadToEnd().Trim();
-        }
-
         static void Main(string[] args)
         {
             Target(VersionAssembly, () =>
             {
                 var version = "1.0.0";
-                var branchName = StartProcessAndReturnOutput("git", "rev-parse --abbrev-ref HEAD");
-                var commitHash = StartProcessAndReturnOutput("git", "log -n1 --pretty=format:\"%H\" HEAD");
-                var commitTimeStamp = StartProcessAndReturnOutput("git", "log -n1 --pretty=format:\"%aD\" HEAD");
+                var branchName = Read("git", "rev-parse --abbrev-ref HEAD").Trim();
+                var commitHash = Read("git", "log -n1 --pretty=format:\"%H\" HEAD").Trim();
+                var commitTimeStamp = Read("git", "log -n1 --pretty=format:\"%aD\" HEAD").Trim();
 
                 var versionPattern = ".*(Version = ).*";
                 var branchPattern = ".*(Branch = ).*";
@@ -62,7 +49,7 @@ namespace build
                 foreach(var versionInfoFile in Directory.GetFiles(Directory.GetCurrentDirectory(), "*", SearchOption.AllDirectories)
                     .Where(path => path.Contains("VersionInfo.cs")))
                 {
-                    StartProcessAndReturnOutput("git", $"checkout {versionInfoFile}");
+                    Read("git", $"checkout {versionInfoFile}");
                 }
             });
             Target(Default, DependsOn(VersionAssembly, Build, RevertVersionFiles));
