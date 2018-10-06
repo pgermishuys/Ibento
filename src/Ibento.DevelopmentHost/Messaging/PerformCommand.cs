@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using Microsoft.AspNetCore.Http;
 
 namespace Ibento.DevelopmentHost.Messaging
@@ -9,8 +10,9 @@ namespace Ibento.DevelopmentHost.Messaging
         public override int MsgTypeId => TypeId;
         public HttpContext Entity { get; }
 
-        public PerformCommand(HttpContext entity)
+        public PerformCommand(Guid messageId, HttpContext entity)
         {
+            MessageId = messageId;
             Entity = entity;
         }
     }

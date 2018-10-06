@@ -30,12 +30,8 @@ namespace Ibento.DevelopmentHost.Services
                 {
                     var body = await reader.ReadToEndAsync();
                     var msg = (Message)JsonConvert.DeserializeObject(body, messageType);
+                    msg.MessageId = message.MessageId;
                     await _mainBus.Publish(msg);
-                    
-                    message.Entity.Response.StatusCode = 200;
-                    var bytes = Encoding.UTF8.GetBytes("Success");
-                    await message.Entity.Response.Body.WriteAsync(bytes, 0, bytes.Length);
-                    await message.Entity.Response.Body.FlushAsync();
                 }
             }
             else

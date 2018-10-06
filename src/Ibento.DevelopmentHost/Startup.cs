@@ -1,6 +1,7 @@
 ﻿using System;
 using Ibento.DevelopmentHost.Bus;
 using Ibento.DevelopmentHost.Framework;
+using Ibento.DevelopmentHost.Messaging;
 using Ibento.DevelopmentHost.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,10 +16,11 @@ namespace Ibento.DevelopmentHost
         {
             var mainBus = new InMemoryBus("MainBus", true, TimeSpan.FromMilliseconds(100));
             var authenticationService = new AuthenticatedRequestMessageProcessor(mainBus, MessageResolver.Default);
-            var incomingHttpRequestAuthenticationManager = new IncomingHttpRequestAuthenticationManager(mainBus);
+            var incomingHttpRequestAuthenticationManager = new HttpRequestManager(mainBus);
             var commandService = new PerformCommandService(mainBus);
             mainBus.Subscribe(authenticationService);
-            mainBus.Subscribe(incomingHttpRequestAuthenticationManager);
+            mainBus.Subscribe<IncomingHttpRequestMessage>(incomingHttpRequestAuthenticationManager);
+            mainBus.Subscribe<OutgoingHttpRequestMessage>(incomingHttpRequestAuthenticationManager);
             mainBus.Subscribe(commandService);
             collection.AddSingleton<IPublisher>(mainBus);
             collection.AddSingleton<ISubscriber>(mainBus);

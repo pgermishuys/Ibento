@@ -13,6 +13,7 @@ namespace Ibento.DevelopmentHost.Messaging
         protected static int NextMsgId = -1;
         private static readonly int TypeId = Interlocked.Increment(ref NextMsgId);
         public virtual int MsgTypeId { get { return TypeId; } }
+        public Guid MessageId { get; set; }
     }
 
     public static class MessageHierarchy

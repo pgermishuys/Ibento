@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Ibento.DevelopmentHost.Bus;
+﻿using Ibento.DevelopmentHost.Bus;
 using Ibento.DevelopmentHost.Messaging;
 using Microsoft.AspNetCore.Mvc;
 

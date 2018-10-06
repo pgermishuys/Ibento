@@ -6,15 +6,15 @@ namespace Ibento.DevelopmentHost.Services
 {
     public class PerformCommandService : IHandle<PerformCommand>
     {
-        private IPublisher _mainBus;
+        private IPublisher _publisher;
 
-        public PerformCommandService(IPublisher mainBus)
+        public PerformCommandService(IPublisher publisher)
         {
-            _mainBus = mainBus;
+            _publisher = publisher;
         }
-        public Task Handle(PerformCommand message)
+        public async Task Handle(PerformCommand message)
         {
-            return Task.FromResult(0);
+            await _publisher.Publish(new OutgoingHttpRequestMessage(message.MessageId));
         }
     }
 }
