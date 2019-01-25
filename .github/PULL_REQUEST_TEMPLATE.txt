@@ -1,0 +1,5 @@
+### Pull Request Checklist
+- [ ] Does the PR introduce a breaking change?
+Moved an API endpoint under a new location/ changed a public contract or changed a message contract that might require a migration
+- [ ] Has the necessary security been taken into consideration?
+Adding a new endpoint might possibly require authentication
